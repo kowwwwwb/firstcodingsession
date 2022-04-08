@@ -20,7 +20,7 @@ Direction:
 ## These are the items you have to accomplished:  
 2022-04-07
 [/] Add assets to the project.  
-[x] Create includes directory; create navbar and sidebar. 
+[/] Create includes directory; create navbar and sidebar. 
 [x] Setup database configuration.  
 [x] Create page for List of office.
 [x] Create page for List of employees.  
