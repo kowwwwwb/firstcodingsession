@@ -25,7 +25,7 @@ Direction:
 2022-04-08
 [/] Setup database configuration.
 [/] Create page for List of office.
-[x] Create page for List of employees.  
+[/] Create page for List of employees.  
 [x] Create page for List of transactions.  
 [x] Create page for adding office.  
 [x] Create page for adding employee.  
