@@ -35,8 +35,10 @@ Direction:
 [/] Applying pagination to list of office.  
 [/] Applying pagination to list of employees.  
 [/] Applying pagination to list of transactions.  
+
+2022-04-11
 [/] Create search feature in list of transactions.  
-[x] Create search feature in list of office. (challenge)  
+[/] Create search feature in list of office. (challenge)  
 [x] Create search feature in list of employees. (challenge)  
 [x] Edit page for office.  
 [x] Edit page for employees.  

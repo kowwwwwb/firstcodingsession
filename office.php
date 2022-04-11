@@ -23,6 +23,9 @@
     require('config/config.php');
     require('config/db.php');
 
+     // gets the value sent over search form
+    $search = isset($_GET['search']) ? $_GET['search']: null;
+
     // define total number of results you want per page
     $results_per_page =10;
 
@@ -45,7 +48,13 @@
     $page_first_result = ($page-1) * $results_per_page;
 
     // Create query
-    $query = 'SELECT * FROM office ORDER BY name LIMIT '. $page_first_result . ',' . $results_per_page;
+    if(strlen($search) > 0){
+        $query = 'SELECT * FROM office WHERE office.name LIKE "%'.$search.'_%" ORDER BY name LIMIT '. $page_first_result . ',' . $results_per_page;
+
+    }else{
+        $query = 'SELECT * FROM office ORDER BY name LIMIT '. $page_first_result . ',' . $results_per_page;
+    }
+
 
     // Get the result
     $result = mysqli_query($conn, $query);
@@ -78,7 +87,12 @@
                     <div class"row">
                     <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
-                                <br/>
+                            <br/>
+                            <div class="col-md-12">
+                                    <form action="office.php" method="GET">
+                                        <input type="text" name="search" />
+                                        <input type="submit" value="Search" class="btn btn-info btn-fill" />
+                                    </form>
                                 <div class="col-md-12">
                                     <a href="/office-add.php">
                                         <button type="submit" class="btn btn-info btn-fill pull-right"> Add New Office</button>
