@@ -23,6 +23,9 @@
     require('config/config.php');
     require('config/db.php');
 
+    // gets the value sent over search form
+    $search = isset($_GET['search']) ? $_GET['search']: null;
+
     // define total number of results you want per page
     $results_per_page =25;
 
@@ -45,8 +48,16 @@
     $page_first_result = ($page-1) * $results_per_page;
 
     // Create query
-    $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office WHERE employee.office_id = office.id ORDER BY employee.lastname LIMIT '. $page_first_result . ',' . $results_per_page;
-
+    if(strlen($search) > 0){
+        $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
+        WHERE employee.office_id = office.id AND CONCAT(employee.lastname, employee.firstname) LIKE "%'.$search. '%"
+        ORDER BY employee.lastname LIMIT '. $page_first_result . ',' . $results_per_page;
+    }else{
+    
+        $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
+        WHERE employee.office_id = office.id 
+        ORDER BY employee.lastname LIMIT '. $page_first_result . ',' . $results_per_page;
+    }
     // Get the result
     $result = mysqli_query($conn, $query);
 
@@ -79,6 +90,11 @@
                     <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
                             <br/>
+                            <div class="col-md-12">
+                                    <form action="employee.php" method="GET">
+                                        <input type="text" name="search" />
+                                        <input type="submit" value="Search" class="btn btn-info btn-fill" />
+                                    </form>
                                 <div class="col-md-12">
                                     <a href="/employee-add.php">
                                         <button type="submit" class="btn btn-info btn-fill pull-right"> Add New Employee</button>
