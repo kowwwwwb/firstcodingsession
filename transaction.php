@@ -40,7 +40,7 @@
     $number_of_page = ceil($number_of_result / $results_per_page);
 
     // determine which page number visitor is currently on
-    if(!isset($GET['page'])){
+    if(!isset($_GET['page'])){
         $page = 1;
     }else{
         $page = $_GET['page'];
@@ -51,11 +51,15 @@
 
     // Create query
     if(strlen($search) > 0){
-        $query = 'SELECT transaction.datelog, transaction.documentcode, transaction.action, transaction.remarks, office.name as office_name, CONCAT(employee.lastname, ",", employee.firstname) as employee_fullname FROM recordapp_db.employee, recordapp_db.office, recordapp_db.transaction 
-        WHERE transaction.employee_id=employee.id and transaction.office_id = office.id and transaction.documentcode =' . $search . ' ORDER BY transaction.documentcode, transaction.datelog LIMIT '. $page_first_result . ',' . $results_per_page;
+        $query = 'SELECT transaction.id, transaction.datelog, transaction.documentcode, transaction.action, transaction.remarks, office.name as office_name, 
+        CONCAT(employee.lastname, ",", employee.firstname) as employee_fullname FROM recordapp_db.employee, recordapp_db.office, recordapp_db.transaction 
+        WHERE transaction.employee_id=employee.id and transaction.office_id = office.id and transaction.documentcode =' . $search . ' 
+        ORDER BY transaction.documentcode, transaction.datelog LIMIT '. $page_first_result . ',' . $results_per_page;
     }else{
-        $query = 'SELECT transaction.datelog, transaction.documentcode, transaction.action, transaction.remarks, office.name as office_name, CONCAT(employee.lastname, ",", employee.firstname) as employee_fullname FROM recordapp_db.employee, recordapp_db.office, recordapp_db.transaction 
-        WHERE transaction.employee_id=employee.id and transaction.office_id = office.id ORDER BY transaction.documentcode, transaction.datelog LIMIT '. $page_first_result . ',' . $results_per_page;
+        $query = 'SELECT transaction.id, transaction.datelog, transaction.documentcode, transaction.action, transaction.remarks, office.name as office_name, 
+        CONCAT(employee.lastname, ",", employee.firstname) as employee_fullname FROM recordapp_db.employee, recordapp_db.office, recordapp_db.transaction 
+        WHERE transaction.employee_id=employee.id and transaction.office_id = office.id ORDER BY transaction.documentcode, transaction.datelog 
+        LIMIT '. $page_first_result . ',' . $results_per_page;
     }
 
     
@@ -116,6 +120,7 @@
                                             <th>Office</th>
                                             <th>Employee</th>
                                             <th>Remarks</th>
+                                       
                                             
                                         </thead>
                                         <tbody>
@@ -126,7 +131,12 @@
                                                 <td><?php echo $transaction['action']; ?></td>
                                                 <td><?php echo $transaction['office_name']; ?></td>
                                                 <td><?php echo $transaction['employee_fullname']; ?></td>
-                                                <td><?php echo $transaction['remarks']; ?></td>                                               
+                                                <td><?php echo $transaction['remarks']; ?></td>         
+                                                <td> 
+                                                    <a href="/transaction-edit.php?id=<?php echo $transaction['id']; ?>">
+                                                        <button type="submit" class="btn btn-warning btn-fill pull-right">Edit</button>
+                                                    </a>
+                                                </td>                                     
                                             </tr>
                                             <?php endforeach ?>     
                                         </tbody>
