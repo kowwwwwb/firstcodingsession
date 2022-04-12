@@ -38,7 +38,7 @@
     $number_of_page = ceil($number_of_result / $results_per_page);
 
     // determine which page number visitor is currently on
-    if(!isset($GET['page'])){
+    if(!isset($_GET['page'])){
         $page = 1;
     }else{
         $page = $_GET['page'];
@@ -49,12 +49,12 @@
 
     // Create query
     if(strlen($search) > 0){
-        $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
-        WHERE employee.office_id = office.id AND CONCAT(employee.lastname, employee.firstname) LIKE "%'.$search. '%"
+        $query = 'SELECT employee.id, employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
+        WHERE employee.office_id = office.id AND CONCAT(employee.lastname, employee.firstname) LIKE "%'.$search.'%" 
         ORDER BY employee.lastname LIMIT '. $page_first_result . ',' . $results_per_page;
     }else{
     
-        $query = 'SELECT employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
+        $query = 'SELECT employee.id, employee.lastname, employee.firstname, employee.address, office.name as office_name FROM employee, office 
         WHERE employee.office_id = office.id 
         ORDER BY employee.lastname LIMIT '. $page_first_result . ',' . $results_per_page;
     }
@@ -111,6 +111,7 @@
                                             <th>First Name</th>
                                             <th>Address</th>
                                             <th>Office</th>
+                                            <th>Action</th>
                                             
                                         </thead>
                                         <tbody>
@@ -120,6 +121,11 @@
                                                 <td><?php echo $employee['firstname']; ?></td>
                                                 <td><?php echo $employee['address']; ?></td>
                                                 <td><?php echo $employee['office_name']; ?></td>
+                                                <td> 
+                                                    <a href="/employee-edit.php?id=<?php echo $employee['id']; ?>">
+                                                        <button type="submit" class="btn btn-warning btn-fill pull-right">Edit</button>
+                                                    </a>
+                                                </td>
                                                
                                             </tr>
                                             <?php endforeach ?>     
@@ -128,12 +134,12 @@
                                 </div>
                             </div>
                         </div>
-                </div>
-                <?php
+                    </div>
+                    <?php
                          for ($page=1; $page <= $number_of_page; $page++){
-                             echo '<a href ="employee.php?page='. $page . '">' . $page . '</a>';
-                         }                    
-                    
+                            echo '<a href ="employee.php?page='. $page . '">' . $page . '</a>';
+                         }
+                             
                     ?>
                 </div>
             </div>
